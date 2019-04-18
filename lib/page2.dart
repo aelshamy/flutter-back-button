@@ -20,7 +20,6 @@ class _Page2State extends State<Page2> {
   _printLatestValue() {
     setState(() {
       _dirty = myController.text.length != 0;
-      print(_dirty)
     });
   }
 
@@ -29,13 +28,11 @@ class _Page2State extends State<Page2> {
     if (!form.validate()) {
       return;
     }
-
-    _dirty = true;
-    Scaffold.of(context).showSnackBar(new SnackBar(backgroundColor: Colors.black, content: new Text("Saved!")));
+    // Theme.of(context).showSnackBar(new SnackBar(backgroundColor: Colors.black, content: new Text("Saved!")));
   }
 
   Future<bool> _canLeave(BuildContext context) {
-    return _dirty ? Future<bool>.value(true) : _prompt(context);
+    return myController.text.isEmpty ? Future<bool>.value(true) : _prompt(context);
   }
 
   Future<bool> _prompt(BuildContext context) {
@@ -76,11 +73,10 @@ class _Page2State extends State<Page2> {
                   TextFormField(
                     decoration: InputDecoration(labelText: 'Enter something'),
                     validator: (String val) => val.isEmpty ? "You must enter something" : null,
+                    controller: myController,
                   ),
                   RaisedButton(
-                    onPressed: () {
-                      _submit(context);
-                    },
+                    onPressed: () => _submit(context),
                     child: Text('Save'),
                   ),
                 ],
